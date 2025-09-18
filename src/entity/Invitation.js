@@ -32,10 +32,10 @@ module.exports = new EntitySchema({
       nullable: true,
     },
     start_at: {
-      type: "datetime",
+      type: "timestamp",
     },
     end_at: {
-      type: "datetime",
+      type: "timestamp",
     },
     location: {
       type: "varchar",
