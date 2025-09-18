@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Invitación</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+    body {
+      font-family: 'Montserrat', sans-serif;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #f9f9f9;
+    }
+    h1 { 
+        text-align: center;
+        background-color: #d1d4f8;
+        padding: 1rem;
+        border-radius: 25px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    form {
+        background-color: #d1d4f8;
+        padding: 2rem;
+        border-radius: 25px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        padding-right: 3rem;
+        text-align: center;
+        
+
+    }
+    label { display: block; margin-top: 1rem;  }
+
+
+    input, textarea {
+      width: 100%;
+      padding: 0.5rem;;
+      margin-top: 0.5rem;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  width: 100%;
+  background: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background: #0056b3;
+  transform: scale(1.02);
+}
+
+div#result a {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #28a745;
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+}
+div#result a:hover {
+  background: #218838;
+}
+
+  </style>
+</head>
+<body>
+  <h1>Crear Invitación</h1>
+  <form id="invitationForm">
+    <label>Nombre del cumpleañero:
+      <input type="text" name="child_name" placeholder="Ej: Juan Pérez" required>
+    </label>
+    <label>Teléfono del organizador:
+        <input type="text" name="organizer_phone" placeholder="Ej:1123456789" required>
+    </label>
+    <label>Título (opcional):
+      <input type="text" name="title">
+    </label>
+    <label>Mensaje:
+      <textarea name="message" placeholder="¡Vamos a festejar!" required></textarea>
+    </label>
+    <label>Fecha y hora de inicio:
+      <input type="datetime-local" name="start_at" required>
+    </label>
+    <label>Fecha y hora de fin:
+      <input type="datetime-local" name="end_at" required>
+    </label>
+    <label>Ubicación:
+      <input type="text" name="location" required>
+    </label>
+    <button type="submit">Crear invitación</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    document.getElementById("invitationForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+
+      try {
+        const res = await fetch("/api/invitations", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        const json = await res.json();
+        document.getElementById("result").innerHTML =
+          `<p>Invitación creada 🎉</p>
+           <p>Compartí este link: <a href="/i/${json.slug}" target="_blank">${window.location.origin}/i/${json.slug}</a></p>
+            <button id="viewSummary">Ver resumen de respuestas</button>`;
+        
+        
+    document.getElementById("viewSummary").addEventListener("click", () => {
+  window.location.href = `/summary/${json.slug}`;
+});
+        
+        } catch (err) {
+        document.getElementById("result").textContent = "Error al crear invitación.";
+      }
+    });
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Invitación</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap");
+      body {
+        font-family: "Montserrat", sans-serif;
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 1rem;
+        background: #f9f9f9;
+        border-radius: 10px;
+      }
+      /* h1, h2 { text-align: center; } */
+
+      .card {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 1.5rem;
+        background: #d1d4f8;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 2rem;
+        color: #ff8514;
+      }
+      h2 {
+        font-family: "Sour Gummy", cursive;
+        font-size: 1.5rem;
+        color: #333;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+      }
+      button {
+        flex: 1;
+        margin: 0 5px;
+        padding: 0.7rem;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: all 0.2s ease;
+      }
+
+      button:hover {
+        opacity: 0.9;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        size: 2.5rem;
+        transform: scale(1.05);
+      }
+
+      .accept {
+        background: #28a745;
+        color: white;
+      }
+      .decline {
+        background: #dc3545;
+        color: white;
+      }
+      .maybe {
+        background: #ffc107;
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1 id="title">Cumpleaños 🎉</h1>
+      <h2 id="child"></h2>
+      <p><b></b> <span id="message"></span></p>
+      <p>📅 <b>Inicio:</b> <span id="start"></span></p>
+      <p>📅 <b>Fin:</b> <span id="end"></span></p>
+      <p>📍 <b>Ubicación:</b> <span id="location"></span></p>
+
+      <div class="buttons">
+        <button class="accept" onclick="respond('accepted')">
+          ✅ Asistiré
+        </button>
+        <button class="decline" onclick="respond('declined')">
+          ❌ No puedo
+        </button>
+        <button class="maybe" onclick="respond('maybe')">🤔 Tal vez</button>
+      </div>
+
+      <script>
+        let slug = window.location.pathname.split("/").pop();
+        let invitation = null;
+
+        async function loadInvitation() {
+          const res = await fetch(`/api/invitations/${slug}`);
+          invitation = await res.json();
+          document.getElementById("title").textContent = invitation.title
+            ? invitation.title + " 🎉"
+            : "Cumpleaños 🎉";
+          document.getElementById("child").textContent =
+            invitation.child_name + " te invita a su fiesta";
+          document.getElementById("message").textContent = invitation.message;
+          document.getElementById("start").textContent = new Date(
+            invitation.start_at
+          ).toLocaleString();
+          document.getElementById("end").textContent = new Date(
+            invitation.end_at
+          ).toLocaleString();
+          document.getElementById("location").textContent = invitation.location;
+        }
+
+        async function respond(status) {
+          const res = await fetch(`/api/invitations/${slug}/respond`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status }),
+          });
+          const json = await res.json();
+          window.location.href = json.whatsapp_url; // redirige a WhatsApp
+        }
+
+        loadInvitation();
+      </script>
+    </div>
+  </body>
+</html>
