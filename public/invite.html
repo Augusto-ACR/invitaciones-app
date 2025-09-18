@@ -2,18 +2,17 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invitación</title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap");
+
       body {
         font-family: "Montserrat", sans-serif;
-        max-width: 600px;
-        margin: 2rem auto;
-        padding: 1rem;
         background: #f9f9f9;
-        border-radius: 10px;
+        margin: 1rem;
+        padding: 0;
       }
-      /* h1, h2 { text-align: center; } */
 
       .card {
         max-width: 600px;
@@ -22,39 +21,52 @@
         background: #d1d4f8;
         border-radius: 15px;
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
       }
 
       h1 {
         font-family: "Playfair Display", serif;
         font-size: 2rem;
         color: #ff8514;
+        margin-bottom: 0.5rem;
+        text-align: center;
       }
+
       h2 {
         font-family: "Sour Gummy", cursive;
         font-size: 1.5rem;
         color: #333;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      p {
+        font-size: 1rem;
+        margin: 0.5rem 0;
       }
 
       .buttons {
         display: flex;
         justify-content: space-between;
-        margin-top: 1rem;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
       }
+
       button {
-        flex: 1;
-        margin: 0 5px;
-        padding: 0.7rem;
+        flex: 1 1 30%;
+        padding: 0.8rem;
         border: none;
         cursor: pointer;
         font-weight: bold;
-        border-radius: 5px;
+        border-radius: 8px;
         transition: all 0.2s ease;
+        font-size: 1rem;
       }
 
       button:hover {
         opacity: 0.9;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        size: 2.5rem;
         transform: scale(1.05);
       }
 
@@ -62,13 +74,45 @@
         background: #28a745;
         color: white;
       }
+
       .decline {
         background: #dc3545;
         color: white;
       }
+
       .maybe {
         background: #ffc107;
         color: black;
+      }
+
+      /* Responsive */
+      @media (max-width: 480px) {
+        .card {
+          padding: 1rem;
+          margin: 1rem auto;
+        }
+
+        h1 {
+          font-size: 1.5rem;
+        }
+
+        h2 {
+          font-size: 1.2rem;
+        }
+
+        p {
+          font-size: 0.95rem;
+        }
+
+        button {
+          flex: 1 1 100%;
+          font-size: 0.95rem;
+        }
+
+        .buttons {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
       }
     </style>
   </head>
@@ -76,18 +120,14 @@
     <div class="card">
       <h1 id="title">Cumpleaños 🎉</h1>
       <h2 id="child"></h2>
-      <p><b></b> <span id="message"></span></p>
+      <p><span id="message"></span></p>
       <p>📅 <b>Inicio:</b> <span id="start"></span></p>
       <p>📅 <b>Fin:</b> <span id="end"></span></p>
       <p>📍 <b>Ubicación:</b> <span id="location"></span></p>
 
       <div class="buttons">
-        <button class="accept" onclick="respond('accepted')">
-          ✅ Asistiré
-        </button>
-        <button class="decline" onclick="respond('declined')">
-          ❌ No puedo
-        </button>
+        <button class="accept" onclick="respond('accepted')">✅ Asistiré</button>
+        <button class="decline" onclick="respond('declined')">❌ No puedo</button>
         <button class="maybe" onclick="respond('maybe')">🤔 Tal vez</button>
       </div>
 

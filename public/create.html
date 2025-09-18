@@ -2,9 +2,12 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crear Invitación</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+
+    /* General */
     body {
       font-family: 'Montserrat', sans-serif;
       max-width: 600px;
@@ -12,65 +15,99 @@
       padding: 1rem;
       background: #f9f9f9;
     }
+
     h1 { 
-        text-align: center;
-        background-color: #d1d4f8;
-        padding: 1rem;
-        border-radius: 25px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+      background-color: #d1d4f8;
+      padding: 1rem;
+      border-radius: 25px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      font-size: 1.8rem;
     }
+
     form {
-        background-color: #d1d4f8;
-        padding: 2rem;
-        border-radius: 25px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        padding-right: 3rem;
-        text-align: center;
-        
-
+      background-color: #d1d4f8;
+      padding: 2rem;
+      border-radius: 25px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
     }
-    label { display: block; margin-top: 1rem;  }
 
+    label { 
+      display: block; 
+      margin-top: 1rem;  
+      font-size: 1rem;
+      text-align: left;
+    }
 
     input, textarea {
       width: 100%;
-      padding: 0.5rem;;
+      padding: 0.7rem;
       margin-top: 0.5rem;
       border-radius: 25px;
       border: 1px solid #ccc;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
     }
 
     button {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  width: 100%;
-  background: #007BFF;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 25px;
-  font-size: 1.1rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  transition: all 0.2s ease;
-}
+      margin-top: 1.5rem;
+      padding: 1rem;
+      width: 100%;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: all 0.2s ease;
+    }
 
-button:hover {
-  background: #0056b3;
-  transform: scale(1.02);
-}
+    button:hover {
+      background: #0056b3;
+      transform: scale(1.02);
+    }
 
-div#result a {
-  display: inline-block;
-  margin-top: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: #28a745;
-  color: white;
-  border-radius: 10px;
-  text-decoration: none;
-}
-div#result a:hover {
-  background: #218838;
-}
+    div#result a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: #28a745;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+
+    div#result a:hover {
+      background: #218838;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      body {
+        margin: 1rem;
+        padding: 0.5rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        padding: 0.8rem;
+      }
+
+      form {
+        padding: 1.5rem;
+      }
+
+      input, textarea, button {
+        font-size: 1rem;
+      }
+    }
 
   </style>
 </head>
@@ -122,16 +159,14 @@ div#result a:hover {
            <p>Compartí este link: <a href="/i/${json.slug}" target="_blank">${window.location.origin}/i/${json.slug}</a></p>
             <button id="viewSummary">Ver resumen de respuestas</button>`;
         
+        document.getElementById("viewSummary").addEventListener("click", () => {
+          window.location.href = `/summary/${json.slug}`;
+        });
         
-    document.getElementById("viewSummary").addEventListener("click", () => {
-  window.location.href = `/summary/${json.slug}`;
-});
-        
-        } catch (err) {
+      } catch (err) {
         document.getElementById("result").textContent = "Error al crear invitación.";
       }
     });
-
   </script>
 </body>
 </html>
